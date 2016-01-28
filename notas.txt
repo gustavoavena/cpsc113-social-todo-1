@@ -1,0 +1,29 @@
+Paginas:
+
+Home / Welcome -> Nao autenticado
+
+
+Log In
+Sign Up
+Dashboard
+
+
+Acoes:
+
+Log In
+Sign Up
+Log Out
+Add Task
+
+
+
+Database:
+
+- Users
+	- id
+	- First and last name
+	- email
+	- password_hash
+
+
+
