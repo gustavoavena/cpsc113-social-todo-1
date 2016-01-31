@@ -17,6 +17,20 @@ var Users = require('./models/users.js');
 
 // Configuratio above
 
+app.get('/', function (req, res) {
+    // res.render('home');
+
+    Users.find({}, function(err, users){
+        if(err) {
+            res.send("Error getting users from database");
+        }
+        else {
+            // res.send(String(users.length));
+            res.render('home',{userCount : users.length});
+        }
+    });
+});
+
 
 app.post('/user/register', function (req, res) {
 
