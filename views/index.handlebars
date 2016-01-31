@@ -19,8 +19,20 @@
       </div>
       <!-- <div class="logo">Todo List</div> -->
       <p class="homepage-about">Todo List</p>
+      {{#if userCount}}
       <p> We currently have {{userCount}} users! </p>
+      {{/if}}
+      {{#if errors}}
+      <div style="color: red">
+      		{{errors}}
+      </div>
+      {{/if}}
 
+      {{#if currentUser}}
+      <div>
+        <p> Hello, <b>{{currentUser.name}}</b></p><br>
+      </div>
+      {{/if}}
       <button class="login blue">Log In</button>
       <button class="signup blue">Sign Up</button>
     </div>
