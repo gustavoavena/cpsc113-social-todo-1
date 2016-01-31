@@ -1,1 +1,65 @@
-This is the home page!!
+<!-- <h1>This is the home page!! </h1>
+
+
+
+<form action="signup" method="post" id="signup_form">
+	<button type="submit" form="signup_form" value="Submit" id="signup_button">Sign Up</button>
+</form>
+<form action="login" method="post" id="login_form">
+	<button type="submit" form="login_form" value="Submit" id="login_button">Log In</button>
+
+</form>
+
+ -->
+
+  <div class="main-container">
+    <div class="homepage-container">
+      <div id="alertDiv">
+        
+      </div>
+      <!-- <div class="logo">Todo List</div> -->
+      <p class="homepage-about">Todo List</p>
+      <p> We currently have {{userCount}} users! </p>
+      <button class="login blue">Log In</button>
+      <button class="signup blue">Sign Up</button>
+    </div>
+    <form action="/user/login" method="post" class="login-form hidden">
+      <input name="email" type="email" class="text-input" placeholder="email">
+      <input name="password" type="password" class="text-input" placeholder="password">
+      <button class="blue log-in-submit">Log In</button>
+    </form>
+    <form action="/user/register" method="post" class="signup-form hidden">
+      <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name">
+      <input name="email" type="email" class="text-input" placeholder="email">
+      <input name="password" type="password" class="text-input" placeholder="password">
+      <input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation">
+      <div>
+        <button class="blue sign-up-submit">Sign Up</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    $('.homepage-container .signup').on('mousedown', function(){
+      $('.homepage-container').addClass('with-form');
+      $('.homepage-container .login').removeClass('pressed');
+      $(this).addClass('pressed');
+      $('.signup-form').fadeIn(0, function(){
+        $(this).removeClass('hidden');
+      });
+      $('.login-form').fadeOut(0, function(){
+        $(this).addClass('hidden');
+      });
+    })
+    $('.homepage-container .login').on('mousedown', function(){
+      $('.homepage-container').addClass('with-form');
+      $('.homepage-container .signup').removeClass('pressed');
+      $(this).addClass('pressed');
+      $('.login-form').fadeIn(0, function(){
+        $(this).removeClass('hidden');
+      });
+      $('.signup-form').fadeOut(0, function(){
+        $(this).addClass('hidden');
+      });
+    })
+
+  </script>
