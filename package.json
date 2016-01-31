@@ -13,9 +13,12 @@
     "express": "^4.13.4",
     "express-handlebars": "^3.0.0",
     "jquery": "^2.2.0",
+<<<<<<< HEAD
     "mongoose": "^4.3.7"
   },
   "devDependencies": {
+=======
+>>>>>>> 3751149853d40f6fffd4876508015a2d23a19f5f
     "nodemon": "^1.8.1"
   }
 }

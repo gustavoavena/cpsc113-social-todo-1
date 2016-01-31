@@ -11,12 +11,15 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+<<<<<<< HEAD
 
 var Users = require('./models/users.js');
 
 
 // Configuratio above
 
+=======
+>>>>>>> 3751149853d40f6fffd4876508015a2d23a19f5f
 app.get('/', function (req, res) {
     // res.render('home');
 
@@ -35,6 +38,7 @@ app.post('/signup', function (req, res) {
     res.render('signup_view');
 });
 
+<<<<<<< HEAD
 app.post('/user/register', function (req, res) {
 
     var newUser = new Users();
@@ -56,6 +60,21 @@ app.post('/user/register', function (req, res) {
  //    res.render('dashboard');
 	// }
 });
+=======
+app.post('/signup', function (req, res) {
+    res.render('signup_view');
+});
+
+app.post('/user/register', function (req, res) {
+    // res.send('sign up values');
+    var new_name = req.body.name;
+    // var email = String(req.body.email);
+ 	console.log('chegou!');
+    // res.send(new_name); Tava dando erro pq nao pode dar res.send nada dps de renderizar header.
+    res.render('dashboard');
+	}
+);
+>>>>>>> 3751149853d40f6fffd4876508015a2d23a19f5f
 
 
 
@@ -66,6 +85,10 @@ app.post('/login', function (req, res) {
 
 
 
+<<<<<<< HEAD
 app.listen(3000, function() {
 	console.log("Listening on port 3000");
 });
+=======
+app.listen(3000);
+>>>>>>> 3751149853d40f6fffd4876508015a2d23a19f5f
