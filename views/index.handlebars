@@ -37,7 +37,11 @@
         {{#if tasks}}
           <ul>
           {{#each tasks}}
-            <li> {{this.title}}</li>
+            {{#if this.isComplete}}
+              <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a><strike>{{this.title}} </strike> </li>
+            {{else}}
+            <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>{{this.title}}</li>
+            {{/if}}
           {{/each}}
         </ul>
         {{else}}

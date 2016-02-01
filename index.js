@@ -42,22 +42,27 @@ function isLoggedIn(req, res, next) {
 	}
 }
 
-// function loadUserTasks(req, res, next) {
-// 	if(!res.locals.currentUser) {
-// 		return next();
-// 	}
+function loadUserTasks(req, res, next) {
+	if(!res.locals.currentUser) {
+		return next();
+	}
 
-// 	Tasks.find({owner: res.locals.currentUser}, function(err, tasks) {
-// 		if(!err) {
-// 			res.locals.tasks = tasks;
-// 		}
-// 		else {
-// 			console.log('Error loading tasks.');
-// 			res.render('index', { errors: 'Error loading tasks.'} );
-// 			return next();
-// 		}
-// 	});
-// }
+	Tasks.find({ $or:[
+			{owner: res.locals.currentUser},
+			{collaborator1: res.locals.currentUser.email},
+			{collaborator2: res.locals.currentUser.email},
+			{collaborator3: res.locals.currentUser.email}
+		]}, function(err, tasks) {
+		if(!err) {
+			res.locals.tasks = tasks;
+		}
+		else {
+			console.log('Error loading tasks.');
+			res.render('index', { errors: 'Error loading tasks.'} );
+		}
+		next();
+	});
+}
 
 app.use(function(req, res, next) {;
 
@@ -79,7 +84,7 @@ app.use(function(req, res, next) {;
 
 // Configuratio above
 
-app.get('/', function (req, res) {
+app.get('/', loadUserTasks , function (req, res) {
 	res.render('index');
 });
 
@@ -170,11 +175,29 @@ app.post('/tasks/create', function (req, res) {
 
 });
 
+
+app.get('/tasks/complete', function(req, res) {
+
+	console.log('Completing task. Id: ', req.query.id);
+
+	Tasks.findById(req.query.id, function(err, completedTask) {
+		if(err || !completedTask) {
+			console.log('Error finding task on database.');
+			res.redirect('/');
+		}
+		else {
+			console.log("Method called.");
+			completedTask.completeTask();
+			res.redirect('/');
+		}
+	});
+});
+
 app.get('/user/logout', function(req, res){
   req.session.destroy(function(){
     res.redirect('/');
   });
-})
+});
 
 
 

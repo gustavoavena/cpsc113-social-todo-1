@@ -39,5 +39,15 @@ var TaskSchema = new Schema({
 
 });
 
+TaskSchema.methods.completeTask = function(err) {
+	if(!err) {
+		this.isComplete = !(this.isComplete);
+		this.save();
+	}
+	else {
+		console.log('Error completing a task.');
+	}
+	return;
+};
 
 module.exports = mongoose.model('Tasks', TaskSchema);
