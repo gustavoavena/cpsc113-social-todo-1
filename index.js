@@ -54,6 +54,16 @@ function loadUserTasks(req, res, next) {
 			{collaborator3: res.locals.currentUser.email}
 		]}, function(err, tasks) {
 		if(!err) {
+			for(i in tasks) {
+				console.log(tasks[i],'\n',  res.locals.currentUser);
+				if(tasks[i].owner.equals(res.locals.currentUser._id)) {
+					console.log("Loading my task!\n\n\n", tasks[i]);
+					tasks[i]["mine"] = true;
+				} else {
+					tasks[i]["mine"] = false;
+				}
+			}
+			console.log(tasks);
 			res.locals.tasks = tasks;
 		}
 		else {
@@ -153,7 +163,7 @@ app.use(isLoggedIn);
 app.post('/tasks/create', function (req, res) {
 	var newTask = new Tasks();
 
-	newTask.owner = res.locals.currentUser._id;
+	newTask.owner = res.locals.currentUser;
 	newTask.title = req.body.title;
 	newTask.description = req.body.description;
 	newTask.collaborator1 = req.body.collaborator1;

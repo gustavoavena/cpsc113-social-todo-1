@@ -39,6 +39,8 @@ var TaskSchema = new Schema({
 
 });
 
+
+//This method will be responsible for task completion.
 TaskSchema.methods.completeTask = function(err) {
 	if(!err) {
 		this.isComplete = !(this.isComplete);

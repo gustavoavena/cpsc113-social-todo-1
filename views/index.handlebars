@@ -38,9 +38,20 @@
           <ul>
           {{#each tasks}}
             {{#if this.isComplete}}
-              <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a><strike>{{this.title}} </strike> </li>
+              <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a><strike>{{this.title}} </strike> 
+
+
+
+
+              </li>
             {{else}}
-            <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>{{this.title}}</li>
+            <li>
+              <a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>
+              {{this.title}}
+              {{#if this.mine}}
+              <a href="/tasks/remove?id={{this._id}}"><button type="button">Delete!</button></a>
+              {{/if}}
+            </li>
             {{/if}}
           {{/each}}
         </ul>
