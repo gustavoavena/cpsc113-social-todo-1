@@ -19,9 +19,7 @@
       </div>
       <!-- <div class="logo">Todo List</div> -->
       <p class="homepage-about">Todo List</p>
-      {{#if userCount}}
-      <p> We currently have {{userCount}} users! </p>
-      {{/if}}
+     
       {{#if errors}}
       <div style="color: red">
       		{{errors}}
@@ -30,9 +28,37 @@
 
       {{#if currentUser}}
       <div>
-        <p> Hello, <b>{{currentUser.name}}</b></p><br>
+        <p> Welcome, <b>{{currentUser.name}}</b></p><br>
       </div>
       {{/if}}
+
+      {{#if currentUser}}
+      <div>
+        {{#if tasks}}
+          <ul>
+          {{#each tasks}}
+            <li> {{this.title}}</li>
+          {{/each}}
+        </ul>
+        {{else}}
+          No tasks to show.
+        {{/if}}     
+        
+        <h4>Add a new task</h4>
+        <form action="/tasks/create" method="POST">
+          <label for="title">Task title</label>
+          <input name="title" type="text"><br>
+          <label for="description">Task description</label>
+          <input name="description" type="text"><br>
+          Collaborators<br>
+          <input name="collaborator1" type="email"><br>
+          <input name="collaborator2" type="email"><br>
+          <input name="collaborator3" type="email"><br>
+          <input type="submit">
+
+        </form>
+      </div>
+      {{else}}
       <button class="login blue">Log In</button>
       <button class="signup blue">Sign Up</button>
     </div>
@@ -50,6 +76,7 @@
         <button class="blue sign-up-submit">Sign Up</button>
       </div>
     </form>
+    {{/if}}
   </div>
   <script>
     $('.homepage-container .signup').on('mousedown', function(){

@@ -3,7 +3,10 @@ var exphbs  = require('express-handlebars');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var $ = require('jQuery');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/social-todo');
+var MongoDBStore = require('connect-mongodb-session')(session);
+// var $ = require('jQuery');
 
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -14,89 +17,164 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 var Users = require('./models/users.js');
+var Tasks = require('./models/tasks.js');
+
+var store = new MongoDBStore({ 
+   uri: process.env.MONGO_URL,
+   collection: 'sessions'
+ });
 
 
 app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: 'auto' }
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: 'auto' },
+	store: store
 }));
 
+function isLoggedIn(req, res, next) {
+	if(res.locals.currentUser) {
+		next();
+	} 
+	else {
+		res.sendStatus(403);
+	}
+}
 
-app.use(function(req, res, next) {
+// function loadUserTasks(req, res, next) {
+// 	if(!res.locals.currentUser) {
+// 		return next();
+// 	}
 
-    console.log('req.session = ', req.session);
-    if(req.session.userId) {
-        Users.findById(req.session.userId, function(err, user) {
-            if(!err) {
-                res.locals.currentUser = user;
-            }
-            next();
-        });
-    }
-    else {
-        next();
-    }
-    
-    }
+// 	Tasks.find({owner: res.locals.currentUser}, function(err, tasks) {
+// 		if(!err) {
+// 			res.locals.tasks = tasks;
+// 		}
+// 		else {
+// 			console.log('Error loading tasks.');
+// 			res.render('index', { errors: 'Error loading tasks.'} );
+// 			return next();
+// 		}
+// 	});
+// }
+
+app.use(function(req, res, next) {;
+
+	// console.log('req.session = ', req.session);
+	if(req.session.userId) {
+		Users.findById(req.session.userId, function(err, user) {
+			if(!err) {
+				res.locals.currentUser = user;
+			}
+			next();
+		});
+	}
+	else {
+		next();
+	}
+	
+	}
 );
 
 // Configuratio above
 
 app.get('/', function (req, res) {
-    // res.render('index');
-
-    Users.find({}, function(err, users){
-        if(err) {
-            return res.send("Error getting users from database");
-        }
-        else {
-            // res.send(String(users.length));
-            res.render('index',{
-                userCount : users.length,
-                currentUser: res.locals.currentUser
-            });
-        }
-    });
+	res.render('index');
 });
 
 
 app.post('/user/register', function (req, res) {
-    if(req.body.password !== req.body.password_confirmation) {
-        return res.render('index', {errors: 'Passwords dont match.'});
-    }
+	if(req.body.password !== req.body.password_confirmation) {
+		return res.render('index', {errors: 'Passwords dont match.'});
+	}
 
 
-    var newUser = new Users();
+	var newUser = new Users();
 	newUser.name = req.body.fl_name;
 	newUser.email = req.body.email;
-	newUser.password = req.body.password;
+	newUser.hashed_password = req.body.password;
 
 	newUser.save(function (err, user) {
 		if(err) {
+			err = 'Error registering you!';
 			console.log('Error saving user to database');
 			console.log(err.errors);
-            return res.render('index', { errors: err} );
+			res.render('index', { errors: err} );
 		}
 		else {
-            req.session.userId = user._id;
+			req.session.userId = user._id;
 			console.log('User registered');
-            res.redirect('/');
+			res.redirect('/');
 
 		}
 	});
-    // res.send(new_name); Tava dando erro pq nao pode dar res.send nada dps de renderizar header.
+	// res.send(new_name); Tava dando erro pq nao pode dar res.send nada dps de renderizar header.
  //    res.render('dashboard');
 	// }
 });
 
 
 
-app.post('/login', function (req, res) {
-    res.render('login_view');
+app.post('/user/login', function (req, res) {
+	var user = Users.findOne({email: req.body.email}, function(err, user) {
+		if(err || !user) {
+			res.render('index', {errors: 'bad login, no such user.'});
+			return;
+		}
+		console.log('user= ', user);
+		console.log('actual password= ', user.hashed_password);
+		console.log('provided password= ', req.body.password);
+
+
+		user.comparePassword(req.body.password, function(err, isMatch) {
+			if(err || !isMatch){
+				res.render('index', {errors: 'bad password duder'});
+	   		}
+		   	else{
+				req.session.userId = user._id;
+				res.redirect('/');
+		   	}
+
+		});
+	});
 });
 
+//Everything below this can only be done by a logged in user.
+//This middleware will enforce that.
+
+app.use(isLoggedIn);
+
+app.post('/tasks/create', function (req, res) {
+	var newTask = new Tasks();
+
+	newTask.owner = res.locals.currentUser._id;
+	newTask.title = req.body.title;
+	newTask.description = req.body.description;
+	newTask.collaborator1 = req.body.collaborator1;
+	newTask.collaborator2 = req.body.collaborator2;
+	newTask.collaborator3 = req.body.collaborator3;
+	newTask.isComplete = false;
+
+	newTask.save(function(err, task) {
+		if(err || !task) {
+			console.log('Error saving task to the database.', err);
+			res.render('index', { errors: 'Error saving task to the database.'} );
+		}
+		else {
+			console.log('New task added: ', task.title);
+			res.redirect('/');
+		}
+	});
+
+
+});
+
+app.get('/user/logout', function(req, res){
+  req.session.destroy(function(){
+    res.redirect('/');
+  });
+})
 
 
 
