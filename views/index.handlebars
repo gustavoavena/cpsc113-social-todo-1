@@ -21,8 +21,10 @@
       <p class="homepage-about">Todo List</p>
      
       {{#if errors}}
-      <div style="color: red">
-      		{{errors}}
+      <div id="alertDiv">
+        <div class="alert alert-warning validation-error "style="color: red">
+        		{{errors}}
+        </div>
       </div>
       {{/if}}
 
@@ -38,13 +40,14 @@
           <ul>
           {{#each tasks}}
             {{#if this.isComplete}}
-              <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a><strike>{{this.title}} </strike> 
-
-
-
-
+              <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>
+                <strike>{{this.title}} </strike> 
+              {{#if this.mine}}
+                <a href="/tasks/remove?id={{this._id}}"><button type="button">Delete!</button></a>
+              {{/if}}
               </li>
             {{else}}
+            
             <li>
               <a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>
               {{this.title}}
@@ -60,15 +63,15 @@
         {{/if}}     
         
         <h4>Add a new task</h4>
-        <form action="/tasks/create" method="POST">
-          <label for="title">Task title</label>
-          <input name="title" type="text"><br>
-          <label for="description">Task description</label>
-          <input name="description" type="text"><br>
+        <form action="/tasks/create" id="signup" method="POST">
+          <label for="title">Title</label>
+          <input name="title" id="title" type="text"><br>
+          <label for="description">Description</label>
+          <input name="description" id="description" type="text"><br>
           Collaborators<br>
-          <input name="collaborator1" type="email"><br>
-          <input name="collaborator2" type="email"><br>
-          <input name="collaborator3" type="email"><br>
+          <input name="collaborator1" id="collaborator1" type="email"><br>
+          <input name="collaborator2" id="collaborator2" type="email"><br>
+          <input name="collaborator3" id="collaborator3" type="email"><br>
           <input type="submit">
 
         </form>
@@ -77,12 +80,12 @@
       <button class="login blue">Log In</button>
       <button class="signup blue">Sign Up</button>
     </div>
-    <form action="/user/login" method="post" class="login-form hidden">
-      <input name="email" type="email" class="text-input" placeholder="email">
+    <form action="/user/login" method="post" >
+      <input name="email"  type="email" class="text-input" placeholder="email">
       <input name="password" type="password" class="text-input" placeholder="password">
       <button class="blue log-in-submit">Log In</button>
     </form>
-    <form action="/user/register" method="post" class="signup-form hidden">
+    <form action="/user/register" method="post">
       <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name">
       <input name="email" type="email" class="text-input" placeholder="email">
       <input name="password" type="password" class="text-input" placeholder="password">

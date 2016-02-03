@@ -16,13 +16,14 @@ var Schema = mongoose.Schema,
  };
 
 var UserSchema = new Schema({
-    name    : stringField,
     email     : {
-    	type: String,
- 		minlength: 1,
- 		maxlength: 50,
- 		lowercase: true
+        type: String,
+        minlength: 1,
+        maxlength: 50,
+        lowercase: true,
+        unique: true
     },
+    name    : stringField,
     hashed_password	: stringField,
 
 });

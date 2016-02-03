@@ -55,9 +55,7 @@ function loadUserTasks(req, res, next) {
 		]}, function(err, tasks) {
 		if(!err) {
 			for(i in tasks) {
-				console.log(tasks[i],'\n',  res.locals.currentUser);
 				if(tasks[i].owner.equals(res.locals.currentUser._id)) {
-					console.log("Loading my task!\n\n\n", tasks[i]);
 					tasks[i]["mine"] = true;
 				} else {
 					tasks[i]["mine"] = false;
@@ -101,29 +99,69 @@ app.get('/', loadUserTasks , function (req, res) {
 
 app.post('/user/register', function (req, res) {
 	if(req.body.password !== req.body.password_confirmation) {
-		return res.render('index', {errors: 'Passwords dont match.'});
+		return res.render('index', {errors: 'Password and password confirmation do not match'});
+	}
+	//Validate email length
+	//Validate duplicate email
+
+	if(req.body.password.length < 1 || req.body.password.length > 50) {
+		err = 'Bad password';
+		res.render('index', {errors: err});
+		return;
+	}
+	else if(req.body.fl_name.length < 1 || req.body.fl_name.length > 50) {
+		err = 'Name must be between 1 and 50 character.';
+		res.render('index', {errors: err});
+		return;
 	}
 
+
+	// var oldUser = Users.findOne({email: req.body.email}, function(err) {
+	// 	if(!err) {
+	// 		return res.render('index', {errors: "Account with this email already exists!"});
+	// 	}
+	// });
 
 	var newUser = new Users();
 	newUser.name = req.body.fl_name;
 	newUser.email = req.body.email;
 	newUser.hashed_password = req.body.password;
 
-	newUser.save(function (err, user) {
-		if(err) {
-			err = 'Error registering you!';
-			console.log('Error saving user to database');
-			console.log(err.errors);
-			res.render('index', { errors: err} );
-		}
-		else {
-			req.session.userId = user._id;
-			console.log('User registered');
-			res.redirect('/');
+	newUser.save(function(err, user){
+    // If there are no errors, redirect to home page
+	    if(user && !err){
+	      req.session.userId = user._id;
+	      res.redirect('/');
+	      return;
+	    }
+    	var errors = "Error registering you.";
+	    if(err){
+	      if(err.errmsg && err.errmsg.match(/duplicate/)){
+	        errors = 'Account with this email already exists!';
+	      }
+	      return res.render('index', {errors: errors});
+	    }
+  		}
+  	);
 
-		}
-	});
+	// newUser.save(function (err, user) {
+	// 	if(err) {
+	// 		console.log('Error saving user to database.');
+	// 		console.log(err);
+	// 		var errors = "Error registering you.";
+ //      		if(err.errmsg && err.errmsg.match(/duplicate/)){
+ //        		errors = 'Account with this email already exists!';
+ //      		}
+ //      		return res.render('index', {errors: errors});
+	// 		// res.render('index', { errors: err} );
+	// 	}
+	// 	else {
+	// 		req.session.userId = user._id;
+	// 		console.log('User registered');
+	// 		res.redirect('/');
+
+	// 	}
+	// });
 	// res.send(new_name); Tava dando erro pq nao pode dar res.send nada dps de renderizar header.
  //    res.render('dashboard');
 	// }
@@ -134,7 +172,7 @@ app.post('/user/register', function (req, res) {
 app.post('/user/login', function (req, res) {
 	var user = Users.findOne({email: req.body.email}, function(err, user) {
 		if(err || !user) {
-			res.render('index', {errors: 'bad login, no such user.'});
+			res.render('index', {errors: "Invalid email address"});
 			return;
 		}
 		console.log('user= ', user);
@@ -144,11 +182,14 @@ app.post('/user/login', function (req, res) {
 
 		user.comparePassword(req.body.password, function(err, isMatch) {
 			if(err || !isMatch){
-				res.render('index', {errors: 'bad password duder'});
+				res.render('index', {errors: 'Invalid password'});
+				// res.render('index', {errors: 'Invalid password'});
+				return;
 	   		}
 		   	else{
 				req.session.userId = user._id;
 				res.redirect('/');
+				return;
 		   	}
 
 		});
@@ -198,6 +239,21 @@ app.get('/tasks/complete', function(req, res) {
 		else {
 			console.log("Method called.");
 			completedTask.completeTask();
+			res.redirect('/');
+		}
+	});
+});
+
+app.get('/tasks/remove', function(req, res) {
+	console.log('Removing task. Id: ', req.query.id);
+
+	Tasks.findById(req.query.id, function(err, taskToRemove) {
+		if(err || !taskToRemove) {
+			console.log('Error finding task on database.');
+			res.redirect('/');
+		}
+		else {
+			taskToRemove.remove();
 			res.redirect('/');
 		}
 	});
