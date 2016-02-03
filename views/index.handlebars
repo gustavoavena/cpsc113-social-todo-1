@@ -36,34 +36,29 @@
 
       {{#if currentUser}}
       <div>
-        {{#if tasks}}
+        {{#if task}}
           <ul>
-          {{#each tasks}}
-            {{#if this.isComplete}}
-              <li><a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>
-                <strike>{{this.title}} </strike> 
+          {{#each task}}
+              <div class="tasks-list-item">
+              <li ><a href="/task/complete?id={{this._id}}"><button type="button">Done!</button></a>
+                {{#if this.isComplete}}
+                <span class="tasks-list-item span.task-title"><strike>{{this.title}} </strike> </span>
+                {{else}}
+                <span class="tasks-list-item span.task-title">{{this.title}}</span>
+                {{/if}}
               {{#if this.mine}}
-                <a href="/tasks/remove?id={{this._id}}"><button type="button">Delete!</button></a>
-              {{/if}}
-              </li>
-            {{else}}
-            
-            <li>
-              <a href="/tasks/complete?id={{this._id}}"><button type="button">Done!</button></a>
-              {{this.title}}
-              {{#if this.mine}}
-              <a href="/tasks/remove?id={{this._id}}"><button type="button">Delete!</button></a>
+                <a href="/task/remove?id={{this._id}}"><button type="button">Delete!</button></a>
               {{/if}}
             </li>
-            {{/if}}
+          </div>
           {{/each}}
         </ul>
         {{else}}
-          No tasks to show.
+          No task to show.
         {{/if}}     
         
         <h4>Add a new task</h4>
-        <form action="/tasks/create" id="signup" method="POST">
+        <form id="create" action="/task/create"  method="POST">
           <label for="title">Title</label>
           <input name="title" id="title" type="text"><br>
           <label for="description">Description</label>
@@ -72,26 +67,25 @@
           <input name="collaborator1" id="collaborator1" type="email"><br>
           <input name="collaborator2" id="collaborator2" type="email"><br>
           <input name="collaborator3" id="collaborator3" type="email"><br>
-          <input type="submit">
-
+          <button type="submit" form="create" value="Submit">Submit</button>
         </form>
       </div>
       {{else}}
       <button class="login blue">Log In</button>
       <button class="signup blue">Sign Up</button>
     </div>
-    <form action="/user/login" method="post" >
+    <form action="/user/login" method="post" id="login_form" >
       <input name="email"  type="email" class="text-input" placeholder="email">
       <input name="password" type="password" class="text-input" placeholder="password">
-      <button class="blue log-in-submit">Log In</button>
+      <button class="blue log-in-submit" form="login_form">Log In</button>
     </form>
-    <form action="/user/register" method="post">
+    <form action="/user/register" method="post" id="register_form">
       <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name">
       <input name="email" type="email" class="text-input" placeholder="email">
       <input name="password" type="password" class="text-input" placeholder="password">
       <input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation">
       <div>
-        <button class="blue sign-up-submit">Sign Up</button>
+        <button class="blue sign-up-submit" form="register_form">Sign Up</button>
       </div>
     </form>
     {{/if}}

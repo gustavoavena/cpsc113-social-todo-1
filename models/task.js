@@ -28,7 +28,7 @@ var Schema = mongoose.Schema,
  };
 
 
-var TaskSchema = new Schema({
+var taskSchema = new Schema({
 	owner: ObjectId,
     title    : titleField,
     description: descriptionField,
@@ -41,7 +41,7 @@ var TaskSchema = new Schema({
 
 
 //This method will be responsible for task completion.
-TaskSchema.methods.completeTask = function(err) {
+taskSchema.methods.completeTask = function(err) {
 	if(!err) {
 		this.isComplete = !(this.isComplete);
 		this.save();
@@ -52,4 +52,4 @@ TaskSchema.methods.completeTask = function(err) {
 	return;
 };
 
-module.exports = mongoose.model('Tasks', TaskSchema);
+module.exports = mongoose.model('task', taskSchema);

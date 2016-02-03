@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 var Users = require('./models/users.js');
-var Tasks = require('./models/tasks.js');
+var task = require('./models/task.js');
 
 var store = new MongoDBStore({ 
    uri: process.env.MONGO_URL,
@@ -42,31 +42,31 @@ function isLoggedIn(req, res, next) {
 	}
 }
 
-function loadUserTasks(req, res, next) {
+function loadUsertask(req, res, next) {
 	if(!res.locals.currentUser) {
 		return next();
 	}
 
-	Tasks.find({ $or:[
+	task.find({ $or:[
 			{owner: res.locals.currentUser},
 			{collaborator1: res.locals.currentUser.email},
 			{collaborator2: res.locals.currentUser.email},
 			{collaborator3: res.locals.currentUser.email}
-		]}, function(err, tasks) {
+		]}, function(err, task) {
 		if(!err) {
-			for(i in tasks) {
-				if(tasks[i].owner.equals(res.locals.currentUser._id)) {
-					tasks[i]["mine"] = true;
+			for(i in task) {
+				if(task[i].owner.equals(res.locals.currentUser._id)) {
+					task[i]["mine"] = true;
 				} else {
-					tasks[i]["mine"] = false;
+					task[i]["mine"] = false;
 				}
 			}
-			console.log(tasks);
-			res.locals.tasks = tasks;
+			// console.log(task);
+			res.locals.task = task;
 		}
 		else {
-			console.log('Error loading tasks.');
-			res.render('index', { errors: 'Error loading tasks.'} );
+			console.log('Error loading task.');
+			res.render('index', { errors: 'Error loading task.'} );
 		}
 		next();
 	});
@@ -92,7 +92,7 @@ app.use(function(req, res, next) {;
 
 // Configuratio above
 
-app.get('/', loadUserTasks , function (req, res) {
+app.get('/', loadUsertask , function (req, res) {
 	res.render('index');
 });
 
@@ -129,6 +129,7 @@ app.post('/user/register', function (req, res) {
 
 	newUser.save(function(err, user){
     // If there are no errors, redirect to home page
+        console.log("This is the error:\n",err);
 	    if(user && !err){
 	      req.session.userId = user._id;
 	      res.redirect('/');
@@ -137,7 +138,7 @@ app.post('/user/register', function (req, res) {
     	var errors = "Error registering you.";
 	    if(err){
 	      if(err.errmsg && err.errmsg.match(/duplicate/)){
-	        errors = 'Account with this email already exists!';
+	        errors = "Account with this email already exists!";
 	      }
 	      return res.render('index', {errors: errors});
 	    }
@@ -175,9 +176,9 @@ app.post('/user/login', function (req, res) {
 			res.render('index', {errors: "Invalid email address"});
 			return;
 		}
-		console.log('user= ', user);
-		console.log('actual password= ', user.hashed_password);
-		console.log('provided password= ', req.body.password);
+		// console.log('user= ', user);
+		// console.log('actual password= ', user.hashed_password);
+		// console.log('provided password= ', req.body.password);
 
 
 		user.comparePassword(req.body.password, function(err, isMatch) {
@@ -201,8 +202,8 @@ app.post('/user/login', function (req, res) {
 
 app.use(isLoggedIn);
 
-app.post('/tasks/create', function (req, res) {
-	var newTask = new Tasks();
+app.post('/task/create', function (req, res) {
+	var newTask = new task();
 
 	newTask.owner = res.locals.currentUser;
 	newTask.title = req.body.title;
@@ -214,11 +215,11 @@ app.post('/tasks/create', function (req, res) {
 
 	newTask.save(function(err, task) {
 		if(err || !task) {
-			console.log('Error saving task to the database.', err);
+			console.log('Error saving task to the database.');
 			res.render('index', { errors: 'Error saving task to the database.'} );
 		}
 		else {
-			console.log('New task added: ', task.title);
+			// console.log('New task added: ', task.title);
 			res.redirect('/');
 		}
 	});
@@ -227,11 +228,11 @@ app.post('/tasks/create', function (req, res) {
 });
 
 
-app.get('/tasks/complete', function(req, res) {
+app.get('/task/complete', function(req, res) {
 
 	console.log('Completing task. Id: ', req.query.id);
 
-	Tasks.findById(req.query.id, function(err, completedTask) {
+	task.findById(req.query.id, function(err, completedTask) {
 		if(err || !completedTask) {
 			console.log('Error finding task on database.');
 			res.redirect('/');
@@ -244,10 +245,10 @@ app.get('/tasks/complete', function(req, res) {
 	});
 });
 
-app.get('/tasks/remove', function(req, res) {
+app.get('/task/remove', function(req, res) {
 	console.log('Removing task. Id: ', req.query.id);
 
-	Tasks.findById(req.query.id, function(err, taskToRemove) {
+	task.findById(req.query.id, function(err, taskToRemove) {
 		if(err || !taskToRemove) {
 			console.log('Error finding task on database.');
 			res.redirect('/');

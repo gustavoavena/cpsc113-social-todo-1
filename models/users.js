@@ -16,14 +16,14 @@ var Schema = mongoose.Schema,
  };
 
 var UserSchema = new Schema({
-    email     : {
+    email: {
         type: String,
+        unique: true,
         minlength: 1,
         maxlength: 50,
-        lowercase: true,
-        unique: true
+        lowercase: true  
     },
-    name    : stringField,
+    name: stringField,
     hashed_password	: stringField,
 
 });
@@ -48,6 +48,7 @@ UserSchema.pre('save', function(next) {
             next();
         });
     });
+
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
