@@ -16,13 +16,13 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.13.0",
     "jquery": "^2.2.0",
+    "kerberos": "0.0.18",
     "mongoose": "^4.3.7"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"
   },
-
   "engines": {
-        "node": "4.2.6"
+    "node": "4.2.6"
   }
 }
