@@ -35,7 +35,6 @@ app.use(session({
 	store: store
 }));
 
-app.use('/', routes);
 
 function isLoggedIn(req, res, next) {
 	if(res.locals.currentUser) {
