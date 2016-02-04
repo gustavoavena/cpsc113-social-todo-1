@@ -2,9 +2,11 @@
 
 <div class="container">
 		<div class="top">
+			{{#if currentUser}}
 			<div id="head">
 				<a style="color:white" href="/user/logout">Log Out</a>
 			</div>
+			{{/if}}
 			<h1 id="title" class="hidden"><span id="logo">CPSC113 <span>Todo</span></span></h1>
 		</div>
 
