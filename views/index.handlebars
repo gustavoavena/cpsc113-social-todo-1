@@ -7,7 +7,7 @@
 			</div>
 			<h1 id="title" class="hidden"><span id="logo">CPSC113 <span>Todo</span></span></h1>
 		</div>
-		
+
 		{{#if errors}}
         <div class="row">
           <div class="alert alert-warning validation-error" id="warning">
@@ -55,7 +55,7 @@
 						        {{else}}
 						        <div class="tasks-list-item ">
 						        <a href="/task/complete?id={{this._id}}"><span class="tasks-list-mark toggle-task"></span></a>
-						        <span class="tasks-list-desc task-title "><strike>{{this.title}}</strike></span>
+						        <span class="tasks-list-desc task-title ">{{this.title}}</span>
 						        <p class="tasks-list-desc"><strike>{{this.description}}</strike></p>
 						        {{/if}}
 
