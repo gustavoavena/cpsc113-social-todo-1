@@ -29,7 +29,7 @@ var store = new MongoDBStore({
 
 
 app.use(session({
-	secret: process.env.SESSION_SECRET,
+	secret: 'foo123',
 	resave: false,
 	saveUninitialized: true,
 	cookie: { secure: 'auto' },
