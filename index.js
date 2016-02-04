@@ -104,6 +104,7 @@ app.post('/user/register', function (req, res) {
 	}
 	//Validate email length
 	//Validate duplicate email
+	console.log(req.body);
 
 	if(req.body.password.length < 1 || req.body.password.length > 50) {
 		err = 'Bad password';
@@ -130,11 +131,11 @@ app.post('/user/register', function (req, res) {
 
 	newUser.save(function(err, user){
     // If there are no errors, redirect to home page
-        console.log("This is the error:\n",err);
 	    if(user && !err){
-	      req.session.userId = user._id;
-	      res.redirect('/');
-	      return;
+	    	console.log('User resgistered. Logged in.\n');
+	      	req.session.userId = user._id;
+	      	res.redirect('/');
+	      	return;
 	    }
     	var errors = "Error registering you.";
 	    if(err){
@@ -185,6 +186,7 @@ app.post('/user/login', function (req, res) {
 		user.comparePassword(req.body.password, function(err, isMatch) {
 			if(err || !isMatch){
 				res.render('index', {errors: 'Invalid password'});
+				console.log('\n\nInvalid password.\n\n');
 				// res.render('index', {errors: 'Invalid password'});
 				return;
 	   		}
@@ -214,6 +216,7 @@ app.post('/task/create', function (req, res) {
 	newTask.collaborator3 = req.body.collaborator3;
 	newTask.isComplete = false;
 
+	console.log("Creating task...\n");
 	newTask.save(function(err, task) {
 		if(err || !task) {
 			console.log('Error saving task to the database.');

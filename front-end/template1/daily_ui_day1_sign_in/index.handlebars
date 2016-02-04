@@ -3,49 +3,49 @@
 			<h1 id="title" class="hidden"><span id="logo">CPSC113 <span>Todo</span></span></h1>
 		</div>
 
+		{{#if errors}}
+        <div class="row">
+          <div class="alert alert-warning validation-error ">
+              <h1>{{errors}}</h1> 
+          </div>
+         </div>
+        {{/if}}
+        {{#if true}}
+        	<h1>TRUEEE</h1>
+        {{/if}}
+
 		{{#if currentUser}}
       	<div>
         	<p> Welcome, <b>{{currentUser.name}}</b></p><br>
       	</div>
       	<p>Show tasks here!</p>
-      	<div>
-        {{#if task}}
-          <ul>
-          {{#each task}}
-              {{#if this.isComplete}}
-                <div class="tasks-list-item complete-task">
-                <li ><a href="/task/complete?id={{this._id}}"><button class="toggle-task" type="button">Done!</button></a>  
-                <span class="task-title"><strike>{{this.title}} </strike> </span>
-                {{else}}
-                <div class="tasks-list-item">
-                <li ><a href="/task/complete?id={{this._id}}"><button class="toggle-task" type="button">Done!</button></a>
-                
-                <span class="task-title">{{this.title}}</span>
-                {{/if}}
-              {{#if this.mine}}
-                <a  href="/task/remove?id={{this._id}}"><button class="delete-task" type="button">Delete!</button></a>
-              {{/if}}
-            </li>
-          </div>
-          {{/each}}
-        </ul>
-        {{else}}
-          No task to show.
-        {{/if}}     
-        
-        <h4>Add a new task</h4>
-        <form id="create" action="/task/create"  method="POST">
-          <label for="title">Title</label>
-          <input name="title" id="title" type="text"><br>
-          <label for="description">Description</label>
-          <input name="description" id="description" type="text"><br>
-          Collaborators<br>
-          <input name="collaborator1" id="collaborator1" type="email"><br>
-          <input name="collaborator2" id="collaborator2" type="email"><br>
-          <input name="collaborator3" id="collaborator3" type="email"><br>
-          <button type="submit" form="create" value="Submit">Submit</button>
-        </form>
-      </div>
+
+      	<div class="row">
+			<div class="col-md-6">
+				<form action="/user/login" method="post" id="login_form">
+					<div class="login-box animated fadeInDown" >
+						<div class="box-header">
+							<h2>Log In</h2>
+						
+						
+					</div>
+				</form>
+			</div>
+			<div class="col-md-6">
+				<form action="/user/register" method="post" id="register_form">
+					<div class="login-box animated fadeInDown">
+						<div class="box-header">
+							<h2>Sign Up</h2>
+						</div>
+						
+						
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+
       	{{else}}
 		<div class="row">
 			<div class="col-md-6">
@@ -69,7 +69,7 @@
 				</form>
 			</div>
 			<div class="col-md-6">
-				<form action="/user/register" method="post" id="register_form">
+				<form action="/user/register" method="POST" id="register_form">
 					<div class="login-box animated fadeInDown">
 						<div class="box-header">
 							<h2>Sign Up</h2>

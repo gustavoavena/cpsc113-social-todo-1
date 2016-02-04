@@ -171,3 +171,35 @@ p.small {
 	
 }
 
+/*.row {
+	max-height: 500px;
+}*/
+
+#warning {
+	color: red;
+	text-align: center;
+}
+
+#welcome {
+	color: white;
+	text-align: right;
+	margin-right: 5%;
+}
+
+.scroll-box {
+    height: 40%;
+    overflow-y: scroll;
+    overflow-x:hidden;
+}
+
+#tasks-box {
+	max-width: 500px;
+	max-height: 600px;
+}
+
+#createTask-box {
+	max-height: 470px;
+	vertical-align: top;
+}
+
+
