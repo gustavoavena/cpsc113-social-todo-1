@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/social-todo');
-mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect("mongodb://heroku_565cfc8f:5qvgqov4j9bnkqr67l9gm9blmq@ds059115.mongolab.com:59115/heroku_565cfc8f");
 var MongoDBStore = require('connect-mongodb-session')(session);
 // var $ = require('jQuery');
 // app.use('/static', express.static('public'));
