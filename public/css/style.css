@@ -78,7 +78,7 @@ p.small {
 	border-radius: 5px;
 	box-shadow: 0 5px 50px rgba(0,0,0,0.4);
 	text-align: center;
-	/*display: inline-block;*/
+
 }
 
 .login-box .box-header {
@@ -205,7 +205,7 @@ p.small {
 	color: white;
 	text-align: right;
 	margin-right: 5%;
-	
+
 }
 
 
