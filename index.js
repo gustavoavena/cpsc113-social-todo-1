@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/social-todo');
 var MongoDBStore = require('connect-mongodb-session')(session);
 // var $ = require('jQuery');
-
+// app.use('/static', express.static('public'));
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -15,6 +15,7 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(__dirname + '/public'));
 
 var Users = require('./models/users.js');
 var task = require('./models/task.js');

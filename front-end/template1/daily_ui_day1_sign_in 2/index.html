@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>CPSC113 Todo</title>
+
+	<!-- Google Fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700|Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Custom Stylesheet -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="top">
+			<h1 id="title" class="hidden"><span id="logo">CPSC113 <span>Todo</span></span></h1>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="/user/login" method="post" id="login_form">
+					<div class="login-box animated fadeInDown" >
+						<div class="box-header">
+							<h2>Log In</h2>
+						</div>
+						<label for="email">Email</label>
+						<br/>
+						<input name="email"  type="email" class="text-input" placeholder="email">
+						<br/>
+						<label for="password">Password</label>
+						<br/>
+						<input name="password" type="password" class="text-input" placeholder="password">
+						<br/>
+						<button type="submit">Log In</button>
+						<br/>
+						
+					</div>
+				</form>
+			</div>
+			<div class="col-md-6">
+				<form action="/user/register" method="post" id="register_form">
+					<div class="login-box animated fadeInDown">
+						<div class="box-header">
+							<h2>Sign Up</h2>
+						</div>
+						<label for="fl_name">First and Last Name</label>
+						<br/>
+						<input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name">
+						<br/>
+						<label for="email">Email</label>
+						<br/>
+						<input name="email" type="email" class="text-input" placeholder="email">
+						<br/>
+						<label for="password">Password</label>
+						<br/>
+						<input name="password" type="password" class="text-input" placeholder="password">
+						<br/>
+						<label for="password_confirmation">Password Confirmation</label>
+						<br/>
+						<input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation">
+						<br/>
+						<button type="submit">Sign Up</button>
+						<br/>
+						
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="row" style:"min-height:20%">
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
+	</div>
+</body>
+
+<script>
+	$(document).ready(function () {
+    	$('#logo').addClass('animated fadeInDown');
+    	$("input:text:visible:first").focus();
+	});
+	$('#username').focus(function() {
+		$('label[for="username"]').addClass('selected');
+	});
+	$('#username').blur(function() {
+		$('label[for="username"]').removeClass('selected');
+	});
+	$('#password').focus(function() {
+		$('label[for="password"]').addClass('selected');
+	});
+	$('#password').blur(function() {
+		$('label[for="password"]').removeClass('selected');
+	});
+</script>
+
+</html>
