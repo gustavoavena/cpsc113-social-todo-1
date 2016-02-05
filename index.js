@@ -15,7 +15,7 @@ var mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/social-todo');
 // mongoose.connect(MONGOLAB_URI);
 
-mongoose.connect(uristring, function (err, res) {
+mongoose.connect(MONGOLAB_URI, function (err, res) {
       if (err) {
       console.log ('ERROR connecting to: ' + uristring + '. ' + err);
       } else {
