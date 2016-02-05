@@ -1,10 +1,4 @@
 
-// MONGOLAB_URI = "mongodb://heroku_565cfc8f:5qvgqov4j9bnkqr67l9gm9blmq@ds059115.mongolab.com:59115/heroku_565cfc8f";
-
-//  var uristring =
-//     process.env.MONGOLAB_URI ||
-//     process.env.MONGOHQ_URL ||
-//     'mongodb://localhost/HelloMongoose';
 
 var express = require('express');
 var exphbs  = require('express-handlebars');
@@ -12,22 +6,11 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/social-todo');
-// mongoose.connect(MONGOLAB_URI);
 
-// mongoose.connect(MONGOLAB_URI, function (err, res) {
-//       if (err) {
-//       console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-//       } else {
-//       console.log ('Succeeded connected to: ' + uristring);
-//       }
-//     });
 mongoose.connect(process.env.MONGO_URL);
 
 
 var MongoDBStore = require('connect-mongodb-session')(session);
-// var $ = require('jQuery');
-// app.use('/static', express.static('public'));
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -269,6 +252,8 @@ app.get('/task/complete', function(req, res) {
 		}
 	});
 });
+
+
 
 app.get('/task/remove', function(req, res) {
 	console.log('Removing task. Id: ', req.query.id);
