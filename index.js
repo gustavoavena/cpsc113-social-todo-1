@@ -1,3 +1,11 @@
+
+MONGOLAB_URI = "mongodb://heroku_565cfc8f:5qvgqov4j9bnkqr67l9gm9blmq@ds059115.mongolab.com:59115/heroku_565cfc8f";
+
+ var uristring =
+    process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost/HelloMongoose';
+
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var app = express();
@@ -5,7 +13,15 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/social-todo');
-mongoose.connect("mongodb://heroku_565cfc8f:5qvgqov4j9bnkqr67l9gm9blmq@ds059115.mongolab.com:59115/heroku_565cfc8f");
+// mongoose.connect(MONGOLAB_URI);
+
+mongoose.connect(uristring, function (err, res) {
+      if (err) {
+      console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+      } else {
+      console.log ('Succeeded connected to: ' + uristring);
+      }
+    });
 
 var MongoDBStore = require('connect-mongodb-session')(session);
 // var $ = require('jQuery');
@@ -275,6 +291,6 @@ app.get('/user/logout', function(req, res){
 
 
 
-app.listen(process.env.PORT || 8080, function() {
+app.listen(process.env.PORT || 3000, function() {
 	console.log("Listening on port 3000");
 });

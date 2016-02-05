@@ -15,7 +15,6 @@
     "express": "^4.13.4",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.13.0",
-    "jquery": "^2.2.0",
     "kerberos": "0.0.18",
     "mongoose": "^4.3.7"
   },
