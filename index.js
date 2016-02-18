@@ -122,11 +122,7 @@ app.post('/user/register', function (req, res) {
 	}
 
 
-	// var oldUser = Users.findOne({email: req.body.email}, function(err) {
-	// 	if(!err) {
-	// 		return res.render('index', {errors: "Account with this email already exists!"});
-	// 	}
-	// });
+	
 
 	var newUser = new Users();
 	newUser.name = req.body.fl_name;
@@ -151,27 +147,7 @@ app.post('/user/register', function (req, res) {
   		}
   	);
 
-	// newUser.save(function (err, user) {
-	// 	if(err) {
-	// 		console.log('Error saving user to database.');
-	// 		console.log(err);
-	// 		var errors = "Error registering you.";
- //      		if(err.errmsg && err.errmsg.match(/duplicate/)){
- //        		errors = 'Account with this email already exists!';
- //      		}
- //      		return res.render('index', {errors: errors});
-	// 		// res.render('index', { errors: err} );
-	// 	}
-	// 	else {
-	// 		req.session.userId = user._id;
-	// 		console.log('User registered');
-	// 		res.redirect('/');
-
-	// 	}
-	// });
-	// res.send(new_name); Tava dando erro pq nao pode dar res.send nada dps de renderizar header.
- //    res.render('dashboard');
-	// }
+	
 });
 
 
@@ -182,9 +158,7 @@ app.post('/user/login', function (req, res) {
 			res.render('index', {errors: "Invalid email address"});
 			return;
 		}
-		// console.log('user= ', user);
-		// console.log('actual password= ', user.hashed_password);
-		// console.log('provided password= ', req.body.password);
+		
 
 
 		user.comparePassword(req.body.password, function(err, isMatch) {
